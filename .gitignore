@@ -1,0 +1,40 @@
+## Build Results (.NET)
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Ll]ogs/
+
+## Visual Studio / IDE
+.vs/
+.vscode/
+*.user
+*.userosscache
+*.sln.docstates
+*.suo
+*.userprefs
+*.dbmdl
+
+## Rider / JetBrains
+.idea/
+*.sln.iml
+
+## Azure Functions
+local.settings.json
+.azurefunctions/
+
+## Docker / Environment
+.env.local
+.env.*.local
+
+## OS Generated
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+.DS_Store
+
+## Node / NPM
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*

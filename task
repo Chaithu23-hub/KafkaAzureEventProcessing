@@ -1,0 +1,50 @@
+Build a complete, working beginner-level sample project for me. Do not teach or explain
+concepts. Give me the code, files, and commands only, with at most one short comment per
+file where something is not obvious.
+
+PROJECT:
+A .NET producer sends an order event to Kafka -> a Kafka-triggered Azure Function receives
+it -> the function calls a separate Orders API over HTTP -> the API stores the event in
+SQL Server.
+
+Producer -> Kafka topic "orders" -> Azure Function (Kafka trigger) -> POST /api/orders
+-> Orders API (ASP.NET Core) -> EF Core -> SQL Server
+
+TECH STACK:
+- C# on .NET 8
+- Azure Functions isolated worker model (Kafka trigger, local run with Core Tools v4)
+- Kafka (Apache Kafka, KRaft mode) and SQL Server 2022 via one docker-compose.yml
+- Producer: .NET console app using Confluent.Kafka
+- Orders API: ASP.NET Core minimal API + EF Core (SqlServer) + migrations
+- Packages as needed: MediatR, Microsoft.Extensions.Http.Resilience
+
+ARCHITECTURE (Clean Architecture, kept simple):
+- Domain: Order entity
+- Application: ProcessOrderEventCommand + handler (MediatR), IOrderApiClient, OrderEventDto
+- Infrastructure: OrderApiClient (typed HttpClient), AddInfrastructure() DI extension
+- Functions: thin Kafka-triggered function that deserializes the message and sends the
+  command to Application (no business logic, no database access)
+- Orders.Api: POST /api/orders, DbContext, unique index on OrderId, idempotent insert
+- Producer: console app that sends a sample order event
+Dependencies point inward only. Show the .csproj references.
+
+REQUIREMENTS:
+- Function throws if the API call fails so Kafka retries the message
+- Duplicate events must not create duplicate rows
+- Use simple names, no advanced patterns, no extra layers or features
+- Ignore Durable Functions for this project
+
+DELIVERABLES, in this order:
+1. Prerequisites list (SDKs and tools to install)
+2. Folder/solution structure tree
+3. CLI commands to create the solution, projects, and references
+4. docker-compose.yml, plus the command to create the "orders" topic
+5. Full code for every file, one code block per file with its path as the heading
+6. Config files: local.settings.json, appsettings.json (connection strings, broker list,
+   API base URL)
+7. EF Core migration commands
+8. Exact run order (which command in which terminal)
+9. How to test: sample order, and the SQL query to confirm the row was saved
+10. Short troubleshooting list (5 most common errors with fixes)
+
+My OS: [Windows]
